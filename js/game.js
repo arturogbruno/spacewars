@@ -93,7 +93,7 @@ const game = {
     },
 
     isCollision() {
-
+        
     },
 
     clear() {
