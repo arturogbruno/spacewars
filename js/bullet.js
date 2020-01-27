@@ -1,5 +1,5 @@
 class Bullet {
-    constructor(ctx, spaceshipX, spaceshipY, spaceshipW, spaceshipH) {
+    constructor(ctx, spaceshipX, spaceshipY, spaceshipW) {
         this.ctx = ctx;
         this.posX = spaceshipX + spaceshipW / 2;
         this.posY = spaceshipY;
@@ -9,7 +9,7 @@ class Bullet {
 
     draw() {
         this.ctx.beginPath();
-        this.ctx.fillStyle = "whitesmoke";
+        this.ctx.fillStyle = "rgb(230, 0, 0)";
         this.ctx.arc(this.posX, this.posY, this.radius, 0, Math.PI * 2);
         this.ctx.fill();
         this.ctx.closePath();

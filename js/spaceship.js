@@ -7,61 +7,60 @@ class Spaceship {
         this.spaceshipImg.src = '../img/spaceship.png';
         this.width = 40;
         this.height = 50;
-        this.posX = canvasW / 2 - 20;
-        this.posY = canvasH - 65;
+        this.posX = canvasW / 2 - this.width / 2;
+        this.posY = canvasH - this.height - 15;
         this.bullets = [];
+        this.keys = [];
         this.setListeners();
     }
 
     setListeners() {
         document.addEventListener('keydown', e => {
-            switch(e.keyCode) {
-                case 37:
-                    this.moveLeft();
-                    break;
-                case 39:
-                    this.moveRight();
-                    break;
-                case 32:
-                    this.shoot();
-                    break;
-            }
+            this.keys[e.keyCode] = true;
         });
+        document.addEventListener('keyup', e => {
+            this.keys[e.keyCode] = false;
+        });
+        document.addEventListener('keydown', e => {
+            if(e.keyCode === 32) {
+                this.shoot();
+            }
+        })
     }
 
     draw() {
         this.ctx.drawImage(this.spaceshipImg, this.posX, this.posY, this.width, this.height);
-        this.bullets.forEach(bullet => bullet.draw());
-        this.bullets.forEach(bullet => bullet.move());
+        this.bullets.forEach((bullet) => bullet.draw());
+        this.bullets.forEach((bullet) => bullet.move());
         this.clearBullets();
     }
 
-    moveLeft() {
-        if(this.posX - 10 <= 5) {
-            this.posX = 5;
-        } else {
-            this.posX -= 10;
+    move() {
+        if(this.keys[37]) {
+            if(this.posX - 4 <= 5) {
+                this.posX = 5;
+            } else {
+                this.posX -= 4;
+            }
+            console.log("Moving left: " + this.posX);
         }
-        console.log("Moving left: " + this.posX);
-    }
-
-    moveRight() {
-        if(this.posX + 10 >= this.canvasW - 45) {
-            this.posX = this.canvasW - 45;
-        } else {
-            this.posX += 10;
+        if(this.keys[39]) {
+            if(this.posX + 4 >= this.canvasW - this.width - 5) {
+                this.posX = this.canvasW - this.width - 5;
+            } else {
+                this.posX += 4;
+            }
+            console.log("Moving right:" + this.posX);
         }
-        console.log("Moving right:" + this.posX);
     }
 
     shoot() {
-        this.bullets.push(new Bullet(this.ctx, this.posX, this.posY, this.width, this.height));
+        this.bullets.push(new Bullet(this.ctx, this.posX, this.posY, this.width));
         console.log("Shooting");
-        
     }
 
     clearBullets() {
         this.bullets = this.bullets.filter(bullet => bullet.posY >= 0);
-      }
+    }
 }
 

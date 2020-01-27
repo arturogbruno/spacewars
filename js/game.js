@@ -3,6 +3,11 @@ const game = {
     ctx: undefined,
     canvasWidth: undefined,
     canvasHeight: undefined,
+    spaceship: undefined,
+    aliens: [],
+    fps: 60,
+    framesCounter: 0,
+    sense: 1,
 
     init() {
         this.canvas = document.querySelector('#canvas');
@@ -30,11 +35,17 @@ const game = {
 
     start() {
         this.reset();
+        this.generateAliens();
         this.intervalID = setInterval(() => {
+            if (this.framesCounter > 5000) {
+                this.framesCounter = 0;
+            }
+            this.framesCounter++;
             this.clear();
             this.drawAll();
-            // this.moveAll();
-        }, 1000 / 60);
+            this.moveAll();
+            // this.isCollision();
+        }, 1000 / this.fps);
       },
 
     reset() {
@@ -43,15 +54,50 @@ const game = {
 
     drawAll() {
         this.spaceship.draw();
+        this.aliens.forEach(aliensRow => aliensRow.forEach(alien => alien.draw(alien)));
+        console.log(this.spaceship.bullets);
+    },
+
+    moveAll() {
+        this.spaceship.move();
+        this.moveAliens();
+    },
+
+    generateAliens() {
+        let rows = 4;
+        let columns = 13;
+        posY = 40;
+        for(let i = 0; i < rows; i++) {
+            posX = 60;
+            this.aliens[i] = new Array();
+            for(let j = 0; j < columns; j++) {
+                this.aliens[i][j] = new Alien(this.ctx, this.canvasWidth, this.canvasHeight, posX, posY);
+                posX += 50;
+            }
+            posY += 35;
+        }
+    },
+
+    moveAliens() {
+        if(this.framesCounter % 30 === 0) {
+            let firstAlien = this.aliens[0][0];
+            let lastAlien = this.aliens[0][this.aliens[0].length - 1];
+            if(firstAlien.posX <= 10) {
+               this.sense = 1;
+            }
+            if(lastAlien.posX >= this.canvasWidth - 50) {
+                this.sense = -1;
+            }
+            this.aliens.forEach(alienRow => alienRow.forEach(alien => alien.posX += this.sense * 10));
+        }
+    },
+
+    isCollision() {
+
     },
 
     clear() {
         this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-    }
-
-    // moveAll() {
-    //     this.spaceship.setListeners();
-    //   },
-    
+    } 
 }
 
