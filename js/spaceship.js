@@ -58,5 +58,18 @@ class Spaceship {
     clearBullets() {
         this.bullets = this.bullets.filter(bullet => bullet.posY >= 0);
     }
-}
 
+    bulletReachAlien(aliens) {
+        this.bullets.forEach(bullet => {
+            aliens.forEach((aliensRow, idx) => aliensRow.forEach((alien, subidx) => {
+                if(bullet.posX + bullet.width >= alien.posX &&
+                    bullet.posY + bullet.height >= alien.posY &&
+                    bullet.posX <= alien.posX + alien.width &&
+                    bullet.posY <= alien.posY + alien.height) {
+                        this.bullets.shift();
+                        aliens[idx].splice(subidx, 1);   
+                }
+            }));
+        });
+    }
+}

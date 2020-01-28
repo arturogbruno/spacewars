@@ -38,7 +38,7 @@ const game = {
         this.ctx.moveTo(0, this.canvasHeight - 40);
         this.ctx.lineTo(this.canvasWidth / 4, this.canvasHeight - 40);
         this.ctx.lineWidth = 3;
-        let leftGrd = this.ctx.createLinearGradient(0, 0, 200, 0);
+        let leftGrd = this.ctx.createLinearGradient(0, 0, this.canvasWidth / 4, 0);
         leftGrd.addColorStop(0, 'rgba(255, 255, 255, 0.65)');
         leftGrd.addColorStop(1, 'rgba(255, 255, 255, 0)');
         this.ctx.strokeStyle = leftGrd;
@@ -46,12 +46,12 @@ const game = {
         this.ctx.closePath();
 
         this.ctx.beginPath();
-        this.ctx.moveTo((this.canvasWidth / 4) * 3, this.canvasHeight - 40);
-        this.ctx.lineTo(this.canvasWidth, this.canvasHeight - 40);
+        this.ctx.moveTo(this.canvasWidth, this.canvasHeight - 40);
+        this.ctx.lineTo((this.canvasWidth / 4) * 3, this.canvasHeight - 40);
         this.ctx.lineWidth = 3;
-        let rightGrd = this.ctx.createLinearGradient((this.canvasWidth / 4) * 3, 0, this.canvasWidth, 0);
-        rightGrd.addColorStop(0, 'rgba(255, 255, 255, 0)');
-        rightGrd.addColorStop(1, 'rgba(255, 255, 255, 0.65)');
+        let rightGrd = this.ctx.createLinearGradient(this.canvasWidth, 0, (this.canvasWidth / 4) * 3, 0);
+        rightGrd.addColorStop(0, 'rgba(255, 255, 255, 0.65)');
+        rightGrd.addColorStop(1, 'rgba(255, 255, 255, 0)');
         this.ctx.strokeStyle = rightGrd;
         this.ctx.stroke();
         this.ctx.closePath(); 
@@ -70,8 +70,8 @@ const game = {
             this.drawAll();
             this.moveAll();
             this.alienShoot();
-            this.bulletReachAlien();
-            console.log(this.aliens[0][0].bullets);
+            this.spaceship.bulletReachAlien(this.aliens);
+            this.bulletReachSpaceship();
         }, 1000 / this.fps);
     },
 
@@ -125,24 +125,15 @@ const game = {
     },
 
     alienShoot() {
-        if(this.framesCounter % 200 === 0) {
-            this.aliens[0][0].shoot();
+        if(this.framesCounter % 40 === 0) {
+            let random1 = Math.floor(Math.random() * this.aliens.length);
+            let random2 = Math.floor(Math.random() * this.aliens[0].length);
+            this.aliens[random1][random2].shoot();
         }
     },
 
-    bulletReachAlien() {
-        this.spaceship.bullets.forEach(bullet => {
-            this.aliens.forEach((aliensRow, idx) => aliensRow.forEach((alien, subidx) => {
-                if(bullet.posX + bullet.width >= alien.posX &&
-                    bullet.posY + bullet.height >= alien.posY &&
-                    bullet.posX <= alien.posX + alien.width &&
-                    bullet.posY <= alien.posY + alien.height) {
-                        this.spaceship.bullets.shift();
-                        this.aliens[idx].splice(subidx, 1);
-                        
-                    }
-            }));
-        });
+    bulletReachSpaceship() {
+        this.aliens.forEach(aliensRow => aliensRow.forEach(alien => alien.bulletReachSpaceship(this.spaceship)));
     },
 
     clear() {
