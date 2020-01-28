@@ -3,7 +3,9 @@ class Bullet {
         this.ctx = ctx;
         this.posX = spaceshipX + spaceshipW / 2;
         this.posY = spaceshipY;
-        this.radius = 5;
+        this.radius = 4;
+        this.width = this.radius * 2;
+        this.height = this.radius * 2;
         this.velY = 12;
     }
 

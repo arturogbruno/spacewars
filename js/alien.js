@@ -14,6 +14,4 @@ class Alien {
         alien.alienImg.src = '../img/green_alien.png';
         this.ctx.drawImage(alien.alienImg, alien.posX, alien.posY, alien.width, alien.height);
     }
-
-
 }

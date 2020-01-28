@@ -44,7 +44,7 @@ const game = {
             this.clear();
             this.drawAll();
             this.moveAll();
-            // this.isCollision();
+            this.bulletReachAlien();
         }, 1000 / this.fps);
       },
 
@@ -54,8 +54,7 @@ const game = {
 
     drawAll() {
         this.spaceship.draw();
-        this.aliens.forEach(aliensRow => aliensRow.forEach(alien => alien.draw(alien)));
-        console.log(this.spaceship.bullets);
+        this.aliens.forEach(aliensRow => aliensRow.forEach(alien => alien.draw(alien)));            
     },
 
     moveAll() {
@@ -65,14 +64,14 @@ const game = {
 
     generateAliens() {
         let rows = 4;
-        let columns = 13;
+        let columns = 10;
         posY = 40;
         for(let i = 0; i < rows; i++) {
             posX = 60;
             this.aliens[i] = new Array();
             for(let j = 0; j < columns; j++) {
                 this.aliens[i][j] = new Alien(this.ctx, this.canvasWidth, this.canvasHeight, posX, posY);
-                posX += 50;
+                posX += 60;
             }
             posY += 35;
         }
@@ -92,8 +91,19 @@ const game = {
         }
     },
 
-    isCollision() {
-        
+    bulletReachAlien() {
+        this.spaceship.bullets.forEach(bullet => {
+            this.aliens.forEach((aliensRow, idx) => aliensRow.forEach((alien, subidx) => {
+                if(bullet.posX + bullet.width >= alien.posX &&
+                    bullet.posY + bullet.height >= alien.posY &&
+                    bullet.posX <= alien.posX + alien.width &&
+                    bullet.posY <= alien.posY + alien.height) {
+                        this.spaceship.bullets.shift();
+                        this.aliens[idx].splice(subidx, 1);
+                        
+                    }
+            }));
+        });
     },
 
     clear() {
