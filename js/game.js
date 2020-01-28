@@ -33,6 +33,30 @@ const game = {
         this.canvasHeight = canvasHeight;
     },
 
+    drawSeparator() {
+        this.ctx.beginPath();
+        this.ctx.moveTo(0, this.canvasHeight - 40);
+        this.ctx.lineTo(this.canvasWidth / 4, this.canvasHeight - 40);
+        this.ctx.lineWidth = 3;
+        let leftGrd = this.ctx.createLinearGradient(0, 0, 200, 0);
+        leftGrd.addColorStop(0, 'rgba(255, 255, 255, 0.65)');
+        leftGrd.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        this.ctx.strokeStyle = leftGrd;
+        this.ctx.stroke();
+        this.ctx.closePath();
+
+        this.ctx.beginPath();
+        this.ctx.moveTo((this.canvasWidth / 4) * 3, this.canvasHeight - 40);
+        this.ctx.lineTo(this.canvasWidth, this.canvasHeight - 40);
+        this.ctx.lineWidth = 3;
+        let rightGrd = this.ctx.createLinearGradient((this.canvasWidth / 4) * 3, 0, this.canvasWidth, 0);
+        rightGrd.addColorStop(0, 'rgba(255, 255, 255, 0)');
+        rightGrd.addColorStop(1, 'rgba(255, 255, 255, 0.65)');
+        this.ctx.strokeStyle = rightGrd;
+        this.ctx.stroke();
+        this.ctx.closePath(); 
+    },
+
     start() {
         this.reset();
         this.generateAliens();
@@ -42,30 +66,23 @@ const game = {
             }
             this.framesCounter++;
             this.clear();
+            this.drawSeparator();
             this.drawAll();
             this.moveAll();
+            this.alienShoot();
             this.bulletReachAlien();
+            console.log(this.aliens[0][0].bullets);
         }, 1000 / this.fps);
-      },
+    },
 
     reset() {
         this.spaceship = new Spaceship(this.ctx, this.canvasWidth, this.canvasHeight);
-      },
-
-    drawAll() {
-        this.spaceship.draw();
-        this.aliens.forEach(aliensRow => aliensRow.forEach(alien => alien.draw(alien)));            
     },
-
-    moveAll() {
-        this.spaceship.move();
-        this.moveAliens();
-    },
-
+    
     generateAliens() {
         let rows = 4;
         let columns = 10;
-        posY = 40;
+        posY = 20;
         for(let i = 0; i < rows; i++) {
             posX = 60;
             this.aliens[i] = new Array();
@@ -73,21 +90,43 @@ const game = {
                 this.aliens[i][j] = new Alien(this.ctx, this.canvasWidth, this.canvasHeight, posX, posY);
                 posX += 60;
             }
-            posY += 35;
+            posY += 45;
         }
     },
+    
+    drawAll() {
+        this.spaceship.draw();
+        this.aliens.forEach(aliensRow => aliensRow.forEach(alien => alien.draw(alien)));            
+    },
 
-    moveAliens() {
-        if(this.framesCounter % 30 === 0) {
+    moveAll() {
+        this.spaceship.move();
+        this.moveAliensX();
+    },
+
+    moveAliensX() {
+        if(this.framesCounter % 20 === 0) {
             let firstAlien = this.aliens[0][0];
             let lastAlien = this.aliens[0][this.aliens[0].length - 1];
             if(firstAlien.posX <= 10) {
-               this.sense = 1;
+                this.sense = 1;
+                this.moveAliensY();
             }
             if(lastAlien.posX >= this.canvasWidth - 50) {
                 this.sense = -1;
+                this.moveAliensY();
             }
             this.aliens.forEach(alienRow => alienRow.forEach(alien => alien.posX += this.sense * 10));
+        }
+    },
+
+    moveAliensY() {
+        this.aliens.forEach(aliensRow => aliensRow.forEach(alien => alien.posY += 30));
+    },
+
+    alienShoot() {
+        if(this.framesCounter % 200 === 0) {
+            this.aliens[0][0].shoot();
         }
     },
 

@@ -8,30 +8,26 @@ class Spaceship {
         this.width = 40;
         this.height = 50;
         this.posX = canvasW / 2 - this.width / 2;
-        this.posY = canvasH - this.height - 15;
+        this.posY = canvasH - this.height - 45;
         this.bullets = [];
         this.keys = [];
         this.setListeners();
     }
 
     setListeners() {
-        document.addEventListener('keydown', e => {
-            this.keys[e.keyCode] = true;
-        });
-        document.addEventListener('keyup', e => {
-            this.keys[e.keyCode] = false;
-        });
+        document.addEventListener('keydown', e => this.keys[e.keyCode] = true);
+        document.addEventListener('keyup', e => this.keys[e.keyCode] = false);
         document.addEventListener('keydown', e => {
             if(e.keyCode === 32) {
                 this.shoot();
             }
-        })
+        });
     }
 
     draw() {
         this.ctx.drawImage(this.spaceshipImg, this.posX, this.posY, this.width, this.height);
-        this.bullets.forEach((bullet) => bullet.draw());
-        this.bullets.forEach((bullet) => bullet.move());
+        this.bullets.forEach(bullet => bullet.draw('spaceship'));
+        this.bullets.forEach(bullet => bullet.move('spaceship'));
         this.clearBullets();
     }
 

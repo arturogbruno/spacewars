@@ -1,23 +1,40 @@
 class Bullet {
-    constructor(ctx, spaceshipX, spaceshipY, spaceshipW) {
+    constructor(ctx, shooterX, shooterY, shooterW) {
         this.ctx = ctx;
-        this.posX = spaceshipX + spaceshipW / 2;
-        this.posY = spaceshipY;
-        this.radius = 4;
-        this.width = this.radius * 2;
-        this.height = this.radius * 2;
-        this.velY = 12;
+        this.posX = shooterX + shooterW / 2;
+        this.posY = shooterY;
+        this.radius = undefined;
+        this.width = undefined,
+        this.height = undefined,
+        this.velY = undefined;
     }
 
-    draw() {
+    draw(shooter) {
         this.ctx.beginPath();
-        this.ctx.fillStyle = "rgb(230, 0, 0)";
-        this.ctx.arc(this.posX, this.posY, this.radius, 0, Math.PI * 2);
-        this.ctx.fill();
-        this.ctx.closePath();
+        if(shooter === 'spaceship') {
+            this.ctx.fillStyle = "rgb(230, 0, 0)";
+            this.radius = 4;
+            this.width = this.radius * 2;
+            this.height = this.radius * 2;
+            this.ctx.arc(this.posX, this.posY, this.radius, 0, Math.PI * 2);
+            this.ctx.fill();
+            this.ctx.closePath();
+        } else {
+            this.width = 2;
+            this.height = 20;
+            this.ctx.fillRect(this.posX, this.posY + 25, this.width, this.height);
+            this.ctx.fillStyle = "rgb(251, 226, 76)";
+        }
+        
     }
 
-    move() {
-        this.posY -= this.velY;
+    move(shooter) {
+        if(shooter === 'spaceship') {
+            this.velY = 12;
+            this.posY -= this.velY;
+        } else {
+            this.velY = 5;
+            this.posY += this.velY;
+        }  
     }
 }

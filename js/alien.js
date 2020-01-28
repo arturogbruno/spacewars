@@ -7,11 +7,29 @@ class Alien {
         this.posY = posY;
         this.width = 30;
         this.height = 25;
+        this.sense = 1;
+        this.bullets = [];
     }
 
     draw(alien) {
         alien.alienImg = new Image();
         alien.alienImg.src = '../img/green_alien.png';
         this.ctx.drawImage(alien.alienImg, alien.posX, alien.posY, alien.width, alien.height);
+
+        this.bullets.forEach(bullet => bullet.draw('alien'));
+        this.bullets.forEach(bullet => bullet.move('alien'));
+
+        this.clearBullets();
+    }
+
+    shoot() {
+        this.bullets.push(new Bullet(this.ctx, this.posX, this.posY, this.width));
+        console.log("Shooting");
+    }
+
+    clearBullets() {
+        if(this.bullets.length > 5) {
+            this.bullets.shift();
+        }
     }
 }
