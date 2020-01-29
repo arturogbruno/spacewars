@@ -30,7 +30,7 @@ class Bullet {
 
     move(shooter) {
         if(shooter === 'spaceship') {
-            this.velY = 12;
+            this.velY = 10;
             this.posY -= this.velY;
         } else {
             this.velY = 5;

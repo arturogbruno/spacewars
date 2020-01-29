@@ -8,10 +8,10 @@ const game = {
     fps: 60,
     framesCounter: 0,
     sense: 1,
-    velX: 40,
+    velX: 20,
 
-    init() {
-        this.canvas = document.querySelector('#canvas');
+    init(canvas) {
+        this.canvas = canvas;
         this.ctx = this.canvas.getContext('2d');
         this.setCanvasDimensions();
         window.onresize = this.setCanvasDimensions;
@@ -72,6 +72,7 @@ const game = {
             this.spaceship.bulletReachAlien(this.aliens);
             this.bulletReachSpaceship(this.spaceship);
             this.alienShoot();
+            this.countAliens();
             this.accelerateAliens();
             this.hasLives();
         }, 1000 / this.fps);
@@ -90,7 +91,7 @@ const game = {
     generateAliens() {
         let rows = 4;
         let columns = 10;
-        posY = 20;
+        posY = 70;
         for(let i = 0; i < rows; i++) {
             posX = 60;
             this.aliens[i] = new Array();
@@ -136,23 +137,18 @@ const game = {
         if(this.aliens[this.aliens.length - 1][0].posY > this.spaceship.posY - this.spaceship.height) {
             this.gameOver();
         } else {
-            this.aliens.forEach(aliensRow => aliensRow.forEach(alien => alien.posY += 30));
+            this.aliens.forEach(aliensRow => aliensRow.forEach(alien => alien.posY += 50));
         }
     },
 
-    accelerateAliens() {
-        let aliensAmount = 0;
-        this.aliens.forEach(aliensRow => {
-            aliensAmount += aliensRow.length;
-        });
-        if(aliensAmount < 30 && this.velX > 30) {
-            this.velX -= 10;
-        } else if(aliensAmount < 20 && this.velX > 20) {
-            this.velX -= 10;
-        } else if(aliensAmount < 10 && this.velX > 10) {
-            this.velX -= 10;
+    accelerateAliens(aliensAmount) {
+        if(aliensAmount < 35 && this.velX >= 20) {
+            this.velX -= 5;
+        } else if(aliensAmount < 25 && this.velX >= 15) {
+            this.velX -= 5;
+        } else if(aliensAmount < 15 && this.velX >= 10) {
+            this.velX -= 5;
         }
-        console.log('Aliens: ' + aliensAmount);
     },
 
     alienShoot() {
@@ -177,10 +173,27 @@ const game = {
         }
     },
 
+    countAliens() {
+        let aliensAmount = 0;
+        this.aliens.forEach(aliensRow => {
+            aliensAmount += aliensRow.length;
+        });
+        if(aliensAmount > 0) {
+            this.accelerateAliens(aliensAmount);
+        } else {
+            this.playerWin();
+        }
+    },
+
+    playerWin() {
+        console.log('YOU WIN');
+        clearInterval(this.intervalID);
+        endScreen.showEndScreen(canvas, 'win');
+    },
+
     gameOver() {
-        setTimeout(() => {
-            clearInterval(this.intervalID);
-            console.log('GAME OVER');
-        }, 1000);
+        console.log('GAME OVER');
+        clearInterval(this.intervalID);
+        endScreen.showEndScreen(canvas, 'lose');
     }
 }
