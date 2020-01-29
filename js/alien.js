@@ -41,9 +41,8 @@ class Alien {
                 bullet.posY <= spaceship.posY + spaceship.height) {
                     console.log("Spaceship has been hit");
                     this.bullets.splice(idx, 1);
-                    
+                    spaceship.lives.pop();
             }   
         });
-        
     }
 }

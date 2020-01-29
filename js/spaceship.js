@@ -11,6 +11,8 @@ class Spaceship {
         this.posY = canvasH - this.height - 45;
         this.bullets = [];
         this.keys = [];
+        this.lives = new Array(3);
+        this.score = 0;
         this.setListeners();
     }
 
@@ -26,6 +28,7 @@ class Spaceship {
 
     draw() {
         this.ctx.drawImage(this.spaceshipImg, this.posX, this.posY, this.width, this.height);
+        this.lives.forEach(life => life.draw());
         this.bullets.forEach(bullet => bullet.draw('spaceship'));
         this.bullets.forEach(bullet => bullet.move('spaceship'));
         this.clearBullets();
@@ -68,6 +71,7 @@ class Spaceship {
                     bullet.posY <= alien.posY + alien.height) {
                         this.bullets.shift();
                         aliens[idx].splice(subidx, 1);   
+                        this.score += 50;
                 }
             }));
         });

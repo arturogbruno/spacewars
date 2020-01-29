@@ -69,15 +69,21 @@ const game = {
             this.drawSeparator();
             this.drawAll();
             this.moveAll();
-            this.alienShoot();
             this.spaceship.bulletReachAlien(this.aliens);
-            this.bulletReachSpaceship();
+            this.bulletReachSpaceship(this.spaceship);
+            this.alienShoot();
         }, 1000 / this.fps);
     },
 
     reset() {
         this.spaceship = new Spaceship(this.ctx, this.canvasWidth, this.canvasHeight);
-    },
+        let lifePosX = 10;
+        for(let i = 0; i < this.spaceship.lives.length; i++) {
+            this.spaceship.lives[i] = new Life(this.ctx, this.canvasWidth, this.canvasHeight, lifePosX);
+            lifePosX += 40;
+        }
+        scoreboard.init(this.ctx, this.canvasWidth, this.canvasHeight);
+    }, 
     
     generateAliens() {
         let rows = 4;
@@ -96,7 +102,9 @@ const game = {
     
     drawAll() {
         this.spaceship.draw();
-        this.aliens.forEach(aliensRow => aliensRow.forEach(alien => alien.draw(alien)));            
+        this.aliens.forEach(aliensRow => aliensRow.forEach(alien => alien.draw(alien)));       
+        scoreboard.draw();     
+        scoreboard.updateScore(this.spaceship.score);
     },
 
     moveAll() {
@@ -138,6 +146,14 @@ const game = {
 
     clear() {
         this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-    } 
+        if(this.spaceship.lives.length === 0) {
+            setTimeout(this.gameOver, 1000);
+        }
+    },
+
+    gameOver() {
+        clearInterval(this.intervalID);
+        console.log('GAME OVER');
+    }
 }
 
