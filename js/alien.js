@@ -24,7 +24,6 @@ class Alien {
 
     shoot() {
         this.bullets.push(new Bullet(this.ctx, this.posX, this.posY, this.width));
-        console.log("Shooting");
     }
 
     clearBullets() {

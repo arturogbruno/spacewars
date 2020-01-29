@@ -41,7 +41,6 @@ class Spaceship {
             } else {
                 this.posX -= 4;
             }
-            console.log("Moving left: " + this.posX);
         }
         if(this.keys[39]) {
             if(this.posX + 4 >= this.canvasW - this.width - 5) {
@@ -49,13 +48,11 @@ class Spaceship {
             } else {
                 this.posX += 4;
             }
-            console.log("Moving right:" + this.posX);
         }
     }
 
     shoot() {
         this.bullets.push(new Bullet(this.ctx, this.posX, this.posY, this.width));
-        console.log("Shooting");
     }
 
     clearBullets() {
@@ -70,7 +67,10 @@ class Spaceship {
                     bullet.posX <= alien.posX + alien.width &&
                     bullet.posY <= alien.posY + alien.height) {
                         this.bullets.shift();
-                        aliens[idx].splice(subidx, 1);   
+                        aliens[idx].splice(subidx, 1);
+                        if(aliens[idx].length === 0) {
+                            aliens.splice(idx, 1);
+                        } 
                         this.score += 50;
                 }
             }));

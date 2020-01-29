@@ -8,6 +8,7 @@ const game = {
     fps: 60,
     framesCounter: 0,
     sense: 1,
+    velX: 40,
 
     init() {
         this.canvas = document.querySelector('#canvas');
@@ -66,12 +67,13 @@ const game = {
             }
             this.framesCounter++;
             this.clear();
-            this.drawSeparator();
             this.drawAll();
             this.moveAll();
             this.spaceship.bulletReachAlien(this.aliens);
             this.bulletReachSpaceship(this.spaceship);
             this.alienShoot();
+            this.accelerateAliens();
+            this.hasLives();
         }, 1000 / this.fps);
     },
 
@@ -101,6 +103,7 @@ const game = {
     },
     
     drawAll() {
+        this.drawSeparator();
         this.spaceship.draw();
         this.aliens.forEach(aliensRow => aliensRow.forEach(alien => alien.draw(alien)));       
         scoreboard.draw();     
@@ -113,7 +116,8 @@ const game = {
     },
 
     moveAliensX() {
-        if(this.framesCounter % 20 === 0) {
+        console.log('Vel: ' + this.velX);
+        if(this.framesCounter % this.velX === 0) {
             let firstAlien = this.aliens[0][0];
             let lastAlien = this.aliens[0][this.aliens[0].length - 1];
             if(firstAlien.posX <= 10) {
@@ -129,13 +133,32 @@ const game = {
     },
 
     moveAliensY() {
-        this.aliens.forEach(aliensRow => aliensRow.forEach(alien => alien.posY += 30));
+        if(this.aliens[this.aliens.length - 1][0].posY > this.spaceship.posY - this.spaceship.height) {
+            this.gameOver();
+        } else {
+            this.aliens.forEach(aliensRow => aliensRow.forEach(alien => alien.posY += 30));
+        }
+    },
+
+    accelerateAliens() {
+        let aliensAmount = 0;
+        this.aliens.forEach(aliensRow => {
+            aliensAmount += aliensRow.length;
+        });
+        if(aliensAmount < 30 && this.velX > 30) {
+            this.velX -= 10;
+        } else if(aliensAmount < 20 && this.velX > 20) {
+            this.velX -= 10;
+        } else if(aliensAmount < 10 && this.velX > 10) {
+            this.velX -= 10;
+        }
+        console.log('Aliens: ' + aliensAmount);
     },
 
     alienShoot() {
         if(this.framesCounter % 40 === 0) {
             let random1 = Math.floor(Math.random() * this.aliens.length);
-            let random2 = Math.floor(Math.random() * this.aliens[0].length);
+            let random2 = Math.floor(Math.random() * this.aliens[random1].length);
             this.aliens[random1][random2].shoot();
         }
     },
@@ -146,14 +169,18 @@ const game = {
 
     clear() {
         this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+    },
+
+    hasLives() {
         if(this.spaceship.lives.length === 0) {
-            setTimeout(this.gameOver, 1000);
+            this.gameOver();
         }
     },
 
     gameOver() {
-        clearInterval(this.intervalID);
-        console.log('GAME OVER');
+        setTimeout(() => {
+            clearInterval(this.intervalID);
+            console.log('GAME OVER');
+        }, 1000);
     }
 }
-
