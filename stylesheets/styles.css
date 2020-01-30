@@ -2,7 +2,7 @@ body {
     background-image: url('../img/bg.jpeg');
     background-repeat: repeat;
     background-size: cover;
-    font-family: 'Press Start 2P', cursive;
+    font-family: 'Press Start 2P', s;
 }
 
 .header {
@@ -25,15 +25,34 @@ body {
 #canvas {
     border: 2px solid rgba(255, 255, 255, 0.65);
     box-shadow: 0 0px 20px rgba(255, 255, 255, 0.8);
-    /* display: none; */
+    display: none;
 }
 
-.main {
-    display: none;
+.start-screen, .end-screen {
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: 150px 0;
+}
+
+.start-screen h1 {
+    color: #fff;
+    text-shadow: 4px 4px rgb(51, 122, 141);
+    margin-bottom: 70px;
+    animation: fadeinout ease-in 3s infinite;
+}
+
+@keyframes fadeinout {
+    0%   {opacity: 0;}
+    50%  {opacity: 1; transform: scale(1.05);}
+    100% {opacity: 0;}
+}
+
+.start-screen h5 {
+    color: #fff;
+    text-shadow: 2px 2px rgb(51, 122, 141);
+    margin: 5px;
 }
 
 .btn {

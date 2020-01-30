@@ -16,6 +16,8 @@ class Spaceship {
         this.setListeners();
     }
 
+
+
     setListeners() {
         document.addEventListener('keydown', e => this.keys[e.keyCode] = true);
         document.addEventListener('keyup', e => this.keys[e.keyCode] = false);
@@ -60,7 +62,6 @@ class Spaceship {
     }
 
     bulletReachAlien(aliens) {
-        let idx;
         this.bullets.forEach(bullet => {
             aliens.forEach((aliensRow, idx) => aliensRow.forEach((alien, subidx) => {
                 if(bullet.posX + bullet.width >= alien.posX &&

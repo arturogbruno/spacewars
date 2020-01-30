@@ -18,7 +18,6 @@ const game = {
         this.setCanvasDimensions();
         window.onresize = this.setCanvasDimensions;
         this.level = level;
-        console.log(this.level);
         this.start();
     },
 
@@ -108,7 +107,7 @@ const game = {
             this.aliens[i] = new Array();
             for(let j = 0; j < columns; j++) {
                 let newAlien = new Alien(this.ctx, this.canvasWidth, this.canvasHeight, posX, posY);
-                posX += 60;
+                posX += 70;
                 newAlien.getRandomImage();
                 this.aliens[i][j] = newAlien;
             }
@@ -132,8 +131,6 @@ const game = {
     },
 
     moveAliensX() {
-        // console.log('Vel: ' + this.velX);
-        // console.log('shooting velocity: ' + this.shootingVel);
         if(this.framesCounter % this.velX === 0) {
             let maxLengthRow = this.aliens[0];
             this.aliens.forEach(aliensRow => {
@@ -216,9 +213,7 @@ const game = {
     },
 
     gameOver() {
-        // setTimeout(() => {
             clearInterval(this.intervalID);
             endScreen.showEndScreen(canvas, 'lose');
-        // }, 3000);
     }
 }
