@@ -60,6 +60,7 @@ class Spaceship {
     }
 
     bulletReachAlien(aliens) {
+        let idx;
         this.bullets.forEach(bullet => {
             aliens.forEach((aliensRow, idx) => aliensRow.forEach((alien, subidx) => {
                 if(bullet.posX + bullet.width >= alien.posX &&
@@ -67,11 +68,14 @@ class Spaceship {
                     bullet.posX <= alien.posX + alien.width &&
                     bullet.posY <= alien.posY + alien.height) {
                         this.bullets.shift();
-                        aliens[idx].splice(subidx, 1);
-                        if(aliens[idx].length === 0) {
-                            aliens.splice(idx, 1);
-                        } 
                         this.score += 50;
+                        alien.image.framesIndexY++;
+                        setTimeout(() => {
+                            aliens[idx].splice(subidx, 1);
+                            if(aliens[idx].length === 0) {
+                                aliens.splice(idx, 1);
+                            } 
+                        }, 200);  
                 }
             }));
         });

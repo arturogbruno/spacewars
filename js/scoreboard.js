@@ -3,20 +3,22 @@ const scoreboard = {
     canvasW: undefined,
     canvasH: undefined,
     
-    init(ctx, canvasW, canvasH) {
+    init(ctx, canvasW, canvasH, level) {
+        this.ctx = ctx;       
         this.canvas = canvas;
         this.canvasW = canvasW;
         this.canvasH = canvasH;
-        this.ctx = ctx;        
+        this.level = level;
     },
 
     draw() {
-        this.ctx.font = '24px sans-serif';
-        this.ctx.fillText('Score: ', this.canvasW - 160, this.canvasH - 12);
+        this.ctx.font = '18px sans-serif';
+        this.ctx.fillText(`Level: ${this.level}`, this.canvasW - 190, this.canvasH - 15);
+        this.ctx.fillText('Score: ', this.canvasW - 110, this.canvasH - 15);
     },
 
     updateScore(score) {
-        this.ctx.font = '24px sans-serif';
-        this.ctx.fillText(`${score}`, this.canvasW - 85, this.canvasH - 12);
+        this.ctx.font = '18px sans-serif';
+        this.ctx.fillText(`${score}`, this.canvasW - 50, this.canvasH - 15);
     }    
 }

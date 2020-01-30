@@ -1,5 +1,6 @@
 const endScreen = {
     showEndScreen(canvas, result) {
+        console.log('WTF?!');
         canvas.style.display = 'none';
 
         let mainDomEl = document.querySelector('.main');
@@ -11,7 +12,7 @@ const endScreen = {
         mainDomEl.appendChild(resultImg);
 
         const btnRestart = document.createElement('button');
-        result === 'lose' ? btnRestart.innerHTML = 'Retry' : btnRestart.innerHTML = 'Restart';
+        result === 'lose' ? btnRestart.innerHTML = 'Retry' : btnRestart.innerHTML = 'Next level';
         btnRestart.classList = 'btn';
         mainDomEl.appendChild(btnRestart);
 
@@ -19,7 +20,7 @@ const endScreen = {
             mainDomEl.style.display = 'none';
             [...mainDomEl.children].forEach(child => mainDomEl.removeChild(child));
             canvas.style.display = 'block';
-            game.init(canvas);
+            result === 'lose' ? game.init(canvas, 1) : game.init(canvas, 2);
         });
     }
 }

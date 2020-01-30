@@ -8,13 +8,17 @@ const game = {
     fps: 60,
     framesCounter: 0,
     sense: 1,
+    level: 1,
     velX: 20,
+    shootingVel: 40,
 
-    init(canvas) {
+    init(canvas, level = 1) {
         this.canvas = canvas;
         this.ctx = this.canvas.getContext('2d');
         this.setCanvasDimensions();
         window.onresize = this.setCanvasDimensions;
+        this.level = level;
+        console.log(this.level);
         this.start();
     },
 
@@ -79,13 +83,20 @@ const game = {
     },
 
     reset() {
+        this.background = new Background(this.ctx, this.canvasWidth, this.canvasHeight);
         this.spaceship = new Spaceship(this.ctx, this.canvasWidth, this.canvasHeight);
+        this.aliens = [];
         let lifePosX = 10;
         for(let i = 0; i < this.spaceship.lives.length; i++) {
             this.spaceship.lives[i] = new Life(this.ctx, this.canvasWidth, this.canvasHeight, lifePosX);
             lifePosX += 40;
         }
-        scoreboard.init(this.ctx, this.canvasWidth, this.canvasHeight);
+        scoreboard.init(this.ctx, this.canvasWidth, this.canvasHeight, this.level);
+        if(this.level === 1) {
+            this.velX = 20;
+        } else {
+            this.velX = 15;
+        }
     }, 
     
     generateAliens() {
@@ -96,40 +107,53 @@ const game = {
             posX = 60;
             this.aliens[i] = new Array();
             for(let j = 0; j < columns; j++) {
-                this.aliens[i][j] = new Alien(this.ctx, this.canvasWidth, this.canvasHeight, posX, posY);
+                let newAlien = new Alien(this.ctx, this.canvasWidth, this.canvasHeight, posX, posY);
                 posX += 60;
+                newAlien.getRandomImage();
+                this.aliens[i][j] = newAlien;
             }
             posY += 45;
         }
     },
     
     drawAll() {
+        this.background.draw();
         this.drawSeparator();
         this.spaceship.draw();
-        this.aliens.forEach(aliensRow => aliensRow.forEach(alien => alien.draw(alien)));       
+        this.aliens.forEach(aliensRow => aliensRow.forEach(alien => alien.draw(alien, this.framesCounter)));       
         scoreboard.draw();     
         scoreboard.updateScore(this.spaceship.score);
     },
 
     moveAll() {
+        this.background.move();
         this.spaceship.move();
         this.moveAliensX();
     },
 
     moveAliensX() {
-        console.log('Vel: ' + this.velX);
+        // console.log('Vel: ' + this.velX);
+        // console.log('shooting velocity: ' + this.shootingVel);
         if(this.framesCounter % this.velX === 0) {
-            let firstAlien = this.aliens[0][0];
-            let lastAlien = this.aliens[0][this.aliens[0].length - 1];
-            if(firstAlien.posX <= 10) {
-                this.sense = 1;
-                this.moveAliensY();
+            let maxLengthRow = this.aliens[0];
+            this.aliens.forEach(aliensRow => {
+                if(aliensRow.length > maxLengthRow.length) {
+                    maxLengthRow = aliensRow;
+                }
+            });
+            if(this.aliens.length != 0) {
+                let firstAlien = maxLengthRow[0];
+                let lastAlien = maxLengthRow[maxLengthRow.length - 1];
+                if(firstAlien.posX <= 10) {
+                    this.sense = 1;
+                    this.moveAliensY();
+                }
+                if(lastAlien.posX >= this.canvasWidth - 50) {
+                    this.sense = -1;
+                    this.moveAliensY();
+                }
+                this.aliens.forEach(alienRow => alienRow.forEach(alien => alien.posX += this.sense * 10));
             }
-            if(lastAlien.posX >= this.canvasWidth - 50) {
-                this.sense = -1;
-                this.moveAliensY();
-            }
-            this.aliens.forEach(alienRow => alienRow.forEach(alien => alien.posX += this.sense * 10));
         }
     },
 
@@ -152,7 +176,8 @@ const game = {
     },
 
     alienShoot() {
-        if(this.framesCounter % 40 === 0) {
+        this.level === 1 ? this.shootingVel = 40 : this.shootingVel = 20;
+        if(this.framesCounter % this.shootingVel === 0) {
             let random1 = Math.floor(Math.random() * this.aliens.length);
             let random2 = Math.floor(Math.random() * this.aliens[random1].length);
             this.aliens[random1][random2].shoot();
@@ -186,14 +211,14 @@ const game = {
     },
 
     playerWin() {
-        console.log('YOU WIN');
         clearInterval(this.intervalID);
         endScreen.showEndScreen(canvas, 'win');
     },
 
     gameOver() {
-        console.log('GAME OVER');
-        clearInterval(this.intervalID);
-        endScreen.showEndScreen(canvas, 'lose');
+        // setTimeout(() => {
+            clearInterval(this.intervalID);
+            endScreen.showEndScreen(canvas, 'lose');
+        // }, 3000);
     }
 }
