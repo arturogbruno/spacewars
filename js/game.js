@@ -119,6 +119,13 @@ const game = {
             loop: false,
             volume: 1,
         });
+
+        this.gameOverSound = new Howl({
+            src: ['../sounds/game_over.wav'],
+            autoplay: false,
+            loop: false,
+            volume: 1,
+        });
     }, 
     
     generateAliens() {
@@ -155,20 +162,23 @@ const game = {
 
     moveAliensX() {
         if(this.framesCounter % this.velX === 0) {
-            let maxLengthRow = this.aliens[0];
-            this.aliens.forEach(aliensRow => {
-                if(aliensRow.length > maxLengthRow.length) {
-                    maxLengthRow = aliensRow;
+            let allAliens = this.aliens.flat();
+            let leftAlien = this.aliens[0][0];
+            let rigthAlien = this.aliens[0][this.aliens.length - 1];
+            for(let i = 0; i < allAliens.length; i++) {
+                if(allAliens[i].posX < leftAlien.posX) {
+                    leftAlien = allAliens[i];
                 }
-            });
+                if(allAliens[i].posX > rigthAlien.posX) {
+                    rigthAlien = allAliens[i];
+                }   
+            }
             if(this.aliens.length != 0) {
-                let firstAlien = maxLengthRow[0];
-                let lastAlien = maxLengthRow[maxLengthRow.length - 1];
-                if(firstAlien.posX <= 10) {
+                if(leftAlien.posX <= 10) {
                     this.sense = 1;
                     this.moveAliensY();
                 }
-                if(lastAlien.posX >= this.canvasWidth - 50) {
+                if(rigthAlien.posX >= this.canvasWidth - 50) {
                     this.sense = -1;
                     this.moveAliensY();
                 }
@@ -271,6 +281,7 @@ const game = {
 
     gameOver() {
         this.bgMusic.stop();
+        this.gameOverSound.play();
         clearInterval(this.intervalID);
         endScreen.showEndScreen(canvas, 'lose');
     }
