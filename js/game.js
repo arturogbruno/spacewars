@@ -72,7 +72,7 @@ const game = {
             this.clear();
             this.drawAll();
             this.moveAll();
-            this.spaceship.bulletReachAlien(this.aliens);
+            this.bulletReachAlien();
             this.bulletReachSpaceship(this.spaceship);
             this.alienShoot();
             this.countAliens();
@@ -96,6 +96,29 @@ const game = {
         } else {
             this.velX = 15;
         }
+
+        this.bgMusic = new Howl({
+            src: ['../sounds/bg_music.mp3'],
+            autoplay: false,
+            loop: true,
+            volume: 1,
+        });
+
+        this.bgMusic.play();
+
+        this.deadAlienSound = new Howl({
+            src: ['../sounds/invaderkilled.wav'],
+            autoplay: false,
+            loop: false,
+            volume: 1,
+        });
+
+        this.explosionSound = new Howl({
+            src: ['../sounds/explosion.wav'],
+            autoplay: false,
+            loop: false,
+            volume: 1,
+        });
     }, 
     
     generateAliens() {
@@ -118,7 +141,7 @@ const game = {
     drawAll() {
         this.background.draw();
         this.drawSeparator();
-        this.spaceship.draw();
+        this.spaceship.draw(this.framesCounter);
         this.aliens.forEach(aliensRow => aliensRow.forEach(alien => alien.draw(alien, this.framesCounter)));       
         scoreboard.draw();     
         scoreboard.updateScore(this.spaceship.score);
@@ -181,8 +204,41 @@ const game = {
         }
     },
 
+    bulletReachAlien() {
+        this.spaceship.bullets.forEach(bullet => {
+            this.aliens.forEach((aliensRow, idx) => aliensRow.forEach((alien, subidx) => {
+                if(bullet.posX + bullet.width >= alien.posX &&
+                    bullet.posY + bullet.height >= alien.posY &&
+                    bullet.posX <= alien.posX + alien.width &&
+                    bullet.posY <= alien.posY + alien.height) {
+                        this.spaceship.bullets.shift();
+                        this.spaceship.score += 50;
+                        this.deadAlienSound.play();
+                        alien.image.framesIndexY++;
+                        setTimeout(() => {
+                            this.aliens[idx].splice(subidx, 1);
+                            if(this.aliens[idx].length === 0) {
+                                this.aliens.splice(idx, 1);
+                            } 
+                        }, 200);  
+                }
+            }));
+        });
+    },
+
     bulletReachSpaceship() {
-        this.aliens.forEach(aliensRow => aliensRow.forEach(alien => alien.bulletReachSpaceship(this.spaceship)));
+        this.aliens.forEach(aliensRow => aliensRow.forEach(alien => {
+            alien.bullets.forEach((bullet, idx) => {
+                if(bullet.posX + bullet.width >= this.spaceship.posX &&
+                    bullet.posY + bullet.height >= this.spaceship.posY &&
+                    bullet.posX <= this.spaceship.posX + this.spaceship.width &&
+                    bullet.posY <= this.spaceship.posY + this.spaceship.height) {
+                        this.explosionSound.play();
+                        alien.bullets.splice(idx, 1);
+                        this.spaceship.lives.pop();
+                }   
+            });
+        }));
     },
 
     clear() {
@@ -208,12 +264,14 @@ const game = {
     },
 
     playerWin() {
+        this.bgMusic.stop();
         clearInterval(this.intervalID);
         endScreen.showEndScreen(canvas, 'win');
     },
 
     gameOver() {
-            clearInterval(this.intervalID);
-            endScreen.showEndScreen(canvas, 'lose');
+        this.bgMusic.stop();
+        clearInterval(this.intervalID);
+        endScreen.showEndScreen(canvas, 'lose');
     }
 }

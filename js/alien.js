@@ -60,16 +60,4 @@ class Alien {
             this.bullets.shift();
         }
     }
-
-    bulletReachSpaceship(spaceship) {
-        this.bullets.forEach((bullet, idx) => {
-            if(bullet.posX + bullet.width >= spaceship.posX &&
-                bullet.posY + bullet.height >= spaceship.posY &&
-                bullet.posX <= spaceship.posX + spaceship.width &&
-                bullet.posY <= spaceship.posY + spaceship.height) {
-                    this.bullets.splice(idx, 1);
-                    spaceship.lives.pop();
-            }   
-        });
-    }
 }

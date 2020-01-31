@@ -6,6 +6,7 @@ window.onload = () => {
             const canvas = document.querySelector('#canvas');
             startScreenDomEl.style.display = 'none';
             endScreenDomEl.style.display = 'none';
+            document.body.style.backgroundImage = 'url(../img/bg.jpg)'
             startGame(canvas);
         }
     });

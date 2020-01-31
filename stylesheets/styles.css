@@ -1,8 +1,10 @@
 body {
-    background-image: url('../img/bg.jpeg');
-    background-repeat: repeat;
+    background-image: url('../img/bg_start_screen.jpg');
+    background-repeat: no-repeat;
     background-size: cover;
-    font-family: 'Press Start 2P', s;
+    font-family: 'Press Start 2P', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 .header {
@@ -13,7 +15,7 @@ body {
 }
 
 #logo {
-    height: 100px;
+    height: 150px;
     border-bottom: 3px solid rgb(251, 226, 76);
 }
 
@@ -33,25 +35,36 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 150px 0;
+}
+
+.start-screen {
+    margin-top: 400px;
+}
+
+.end-screen {
+    margin-top: 150px;
+}
+
+.end-screen {
+    display: none;
 }
 
 .start-screen h1 {
-    color: #fff;
-    text-shadow: 4px 4px rgb(51, 122, 141);
+    color: rgb(251, 226, 76);
+    text-shadow: 3px 3px rgb(120, 126, 183);
     margin-bottom: 70px;
-    animation: fadeinout ease-in 3s infinite;
+    animation: fadeinout ease-in 4s infinite;
 }
 
 @keyframes fadeinout {
-    0%   {opacity: 0;}
+    0%   {opacity: 0.2;}
     50%  {opacity: 1; transform: scale(1.05);}
-    100% {opacity: 0;}
+    100% {opacity: 0.2;}
 }
 
-.start-screen h5 {
-    color: #fff;
-    text-shadow: 2px 2px rgb(51, 122, 141);
+.start-screen h4 {
+    color: rgb(251, 226, 76);
+    text-shadow: 2px 2px rgb(120, 126, 183);
     margin: 5px;
 }
 
