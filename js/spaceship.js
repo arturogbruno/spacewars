@@ -4,7 +4,7 @@ class Spaceship {
         this.canvasW = canvasW;
         this.canvasH = canvasH;
         this.image = new Image();
-        this.image.src = '../img/spaceship_sprite.png';
+        this.image.src = './img/spaceship_sprite.png';
         this.image.frames = 2;
         this.image.framesIndex = 0;
         this.width = 40;
@@ -16,7 +16,7 @@ class Spaceship {
         this.lives = new Array(3);
         this.score = 0;
         this.shootSound = new Howl({
-            src: ['../sounds/shoot.wav'],
+            src: ['./sounds/shoot.wav'],
             autoplay: false,
             loop: false,
             volume: 1,

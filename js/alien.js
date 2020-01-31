@@ -8,7 +8,7 @@ class Alien {
         this.width = 30;
         this.height = 25;
         this.image = new Image();
-        this.imagesArr = ['../img/white_alien_sprite.png', '../img/yellow_alien_sprite.png', '../img/red_alien_sprite.png', '../img/green_alien_sprite.png'];
+        this.imagesArr = ['./img/white_alien_sprite.png', './img/yellow_alien_sprite.png', './img/red_alien_sprite.png', './img/green_alien_sprite.png'];
         this.image.frames = 2;
         this.image.framesIndexX = 0;
         this.image.framesIndexY = 0;

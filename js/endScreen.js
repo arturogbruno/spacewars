@@ -6,7 +6,7 @@ const endScreen = {
         endScreenDomEl.style.display = 'flex';
 
         const resultImg = document.createElement('img');
-        result === 'lose' ? resultImg.src = '../img/game_over.gif' : resultImg.src = '../img/you_win.gif';
+        result === 'lose' ? resultImg.src = './img/game_over.gif' : resultImg.src = './img/you_win.gif';
         resultImg.height = 200;
         endScreenDomEl.appendChild(resultImg);
 

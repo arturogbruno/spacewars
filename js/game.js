@@ -98,7 +98,7 @@ const game = {
         }
 
         this.bgMusic = new Howl({
-            src: ['../sounds/bg_music.mp3'],
+            src: ['./sounds/bg_music.mp3'],
             autoplay: false,
             loop: true,
             volume: 1,
@@ -107,28 +107,28 @@ const game = {
         this.bgMusic.play();
 
         this.deadAlienSound = new Howl({
-            src: ['../sounds/invaderkilled.wav'],
+            src: ['./sounds/invaderkilled.wav'],
             autoplay: false,
             loop: false,
             volume: 1,
         });
 
         this.explosionSound = new Howl({
-            src: ['../sounds/explosion.wav'],
+            src: ['./sounds/explosion.wav'],
             autoplay: false,
             loop: false,
             volume: 1,
         });
 
         this.gameOverSound = new Howl({
-            src: ['../sounds/game_over.wav'],
+            src: ['./sounds/game_over.wav'],
             autoplay: false,
             loop: false,
             volume: 1,
         });
 
         this.victorySound = new Howl({
-            src: ['../sounds/victory.wav'],
+            src: ['./sounds/victory.wav'],
             autoplay: false,
             loop: false,
             volume: 1,

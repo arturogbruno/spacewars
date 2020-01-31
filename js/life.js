@@ -11,7 +11,7 @@ class Life {
 
     draw() {
         let lifeImg = new Image();
-        lifeImg.src = '../img/spaceship.png';
+        lifeImg.src = './img/spaceship.png';
         this.ctx.drawImage(lifeImg, this.posX, this.posY, this.width, this.height);
     }
 }
