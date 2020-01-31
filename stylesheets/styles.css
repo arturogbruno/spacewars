@@ -42,11 +42,21 @@ body {
 }
 
 .end-screen {
-    margin-top: 150px;
+    margin-top: 100px;
 }
 
 .end-screen {
     display: none;
+}
+
+.end-screen img {
+    height: 210px;
+    /* border-radius: 50%; */
+    box-shadow: 4px 4px 15px rgb(179, 178, 178);
+}
+
+.end-screen h1 {
+    color: rgb(251, 226, 76);
 }
 
 .start-screen h1 {

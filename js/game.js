@@ -126,6 +126,13 @@ const game = {
             loop: false,
             volume: 1,
         });
+
+        this.victorySound = new Howl({
+            src: ['../sounds/victory.wav'],
+            autoplay: false,
+            loop: false,
+            volume: 1,
+        });
     }, 
     
     generateAliens() {
@@ -162,17 +169,9 @@ const game = {
 
     moveAliensX() {
         if(this.framesCounter % this.velX === 0) {
-            let allAliens = this.aliens.flat();
-            let leftAlien = this.aliens[0][0];
-            let rigthAlien = this.aliens[0][this.aliens.length - 1];
-            for(let i = 0; i < allAliens.length; i++) {
-                if(allAliens[i].posX < leftAlien.posX) {
-                    leftAlien = allAliens[i];
-                }
-                if(allAliens[i].posX > rigthAlien.posX) {
-                    rigthAlien = allAliens[i];
-                }   
-            }
+            let allAliens = this.aliens.flat().sort((a, b) => a.posX - b.posX);
+            let leftAlien = allAliens[0];
+            let rigthAlien = allAliens[allAliens.length - 1];
             if(this.aliens.length != 0) {
                 if(leftAlien.posX <= 10) {
                     this.sense = 1;
@@ -275,6 +274,7 @@ const game = {
 
     playerWin() {
         this.bgMusic.stop();
+        this.victorySound.play();
         clearInterval(this.intervalID);
         endScreen.showEndScreen(canvas, 'win');
     },
