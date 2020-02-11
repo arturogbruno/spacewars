@@ -139,13 +139,13 @@ const game = {
         let rows = 4;
         let columns = 10;
         posY = 70;
+
         for(let i = 0; i < rows; i++) {
             posX = 60;
             this.aliens[i] = new Array();
             for(let j = 0; j < columns; j++) {
-                let newAlien = new Alien(this.ctx, this.canvasWidth, this.canvasHeight, posX, posY);
+                let newAlien = new AlienFactory(this.ctx, this.canvasWidth, this.canvasHeight, posX, posY);
                 posX += 70;
-                newAlien.getRandomImage();
                 this.aliens[i][j] = newAlien;
             }
             posY += 45;

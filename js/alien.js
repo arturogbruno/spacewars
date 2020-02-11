@@ -1,63 +1,91 @@
 class Alien {
-    constructor(ctx, canvasW, canvasH, posX, posY) {
-        this.ctx = ctx;
-        this.canvasW = canvasW;
-        this.canvasH = canvasH;
-        this.posX = posX;
-        this.posY = posY;
-        this.width = 30;
-        this.height = 25;
-        this.image = new Image();
-        this.imagesArr = ['./img/white_alien_sprite.png', './img/yellow_alien_sprite.png', './img/red_alien_sprite.png', './img/green_alien_sprite.png'];
-        this.image.frames = 2;
-        this.image.framesIndexX = 0;
-        this.image.framesIndexY = 0;
-        this.sense = 1;
-        this.bullets = [];
+  constructor(ctx, canvasW, canvasH, posX, posY) {
+    this.ctx = ctx;
+    this.canvasW = canvasW;
+    this.canvasH = canvasH;
+    this.posX = posX;
+    this.posY = posY;
+    this.width = 30;
+    this.height = 25;
+    this.image = new Image();
+    this.image.frames = 2;
+    this.image.framesIndexX = 0;
+    this.image.framesIndexY = 0;
+    this.sense = 1;
+    this.bullets = [];
+  }
+
+  draw(alien, framesCounter) {
+    this.ctx.drawImage(
+      this.image,
+      this.image.framesIndexX *
+        Math.floor(this.image.width / this.image.frames),
+      this.image.framesIndexY *
+        Math.floor(this.image.height / this.image.frames),
+      this.image.width / this.image.frames,
+      this.image.height / this.image.frames,
+      alien.posX,
+      alien.posY,
+      alien.width,
+      alien.height
+    );
+
+    this.animate(framesCounter);
+
+    this.bullets.forEach(bullet => bullet.draw("alien"));
+    this.bullets.forEach(bullet => bullet.move("alien"));
+
+    this.clearBullets();
+  }
+
+  animate(framesCounter) {
+    if (framesCounter % 30 === 0) {
+      this.image.framesIndexX++;
     }
-
-    getRandomImage() {
-        let imageIndex = Math.floor(Math.random() * this.imagesArr.length);
-        this.image.src = this.imagesArr[imageIndex];
+    if (this.image.framesIndexX >= this.image.frames) {
+      this.image.framesIndexX = 0;
     }
+  }
 
-    draw(alien, framesCounter) {
-        this.ctx.drawImage(
-            this.image, 
-            this.image.framesIndexX * Math.floor(this.image.width / this.image.frames), 
-            this.image.framesIndexY * Math.floor(this.image.height / this.image.frames), 
-            this.image.width / this.image.frames,
-            this.image.height / this.image.frames,
-            alien.posX, 
-            alien.posY, 
-            alien.width, 
-            alien.height
-        );
+  shoot() {
+    this.bullets.push(new Bullet(this.ctx, this.posX, this.posY, this.width));
+  }
 
-        this.animate(framesCounter);
-
-        this.bullets.forEach(bullet => bullet.draw('alien'));
-        this.bullets.forEach(bullet => bullet.move('alien'));
-
-        this.clearBullets();
+  clearBullets() {
+    if (this.bullets.length > 5) {
+      this.bullets.shift();
     }
+  }
+}
 
-    animate(framesCounter) {
-        if (framesCounter % 30 === 0) {
-            this.image.framesIndexX++;
-        }
-        if (this.image.framesIndexX >= this.image.frames) {
-            this.image.framesIndexX = 0;
-        }
-    }
+class WhiteAlien extends Alien {
+  constructor(ctx, canvasW, canvasH, posX, posY) {
+    super(ctx, canvasW, canvasH, posX, posY);
 
-    shoot() {
-        this.bullets.push(new Bullet(this.ctx, this.posX, this.posY, this.width));
-    }
+    this.image.src = "./img/white_alien_sprite.png";
+  }
+}
 
-    clearBullets() {
-        if(this.bullets.length > 5) {
-            this.bullets.shift();
-        }
-    }
+class GreenAlien extends Alien {
+  constructor(ctx, canvasW, canvasH, posX, posY) {
+    super(ctx, canvasW, canvasH, posX, posY);
+
+    this.image.src = "./img/green_alien_sprite.png";
+  }
+}
+
+class RedAlien extends Alien {
+  constructor(ctx, canvasW, canvasH, posX, posY) {
+    super(ctx, canvasW, canvasH, posX, posY);
+
+    this.image.src = "./img/red_alien_sprite.png";
+  }
+}
+
+class YellowAlien extends Alien {
+  constructor(ctx, canvasW, canvasH, posX, posY) {
+    super(ctx, canvasW, canvasH, posX, posY);
+
+    this.image.src = "./img/yellow_alien_sprite.png";
+  }
 }
