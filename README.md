@@ -1,6 +1,6 @@
 # Space Wars (Ironhack Project #1)
 
-![alt text](https://github.com/arturogbruno/Space-Wars-IH-Project-1/blob/master/img/logo.png?raw=true "Space Wars logo")
+![alt text](https://github.com/arturogbruno/spacewars/blob/master/img/logo.png?raw=true "Space Wars logo")
 
 ### Intro
 Space Wars is a tribute to the famous Space Invaders arcade game. It's the first project I made for Ironhack's web development bootcamp.
@@ -17,5 +17,5 @@ Use arrow keys to move your spaceship and space bar to shoot your laser weapon.
 ### Thanks  👏🏻
 A big thanks to my teammates and teachers for their support.
 
-![alt text](https://raw.githubusercontent.com/arturogbruno/Space-Wars-IH-Project-1/master/img/alien_icon.png)
+![alt text](https://raw.githubusercontent.com/arturogbruno/spacewars/master/img/alien_icon.png)
 
