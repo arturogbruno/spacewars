@@ -1,3 +1,7 @@
+html, body {
+    overflow: hidden;    
+}
+
 body {
     background-image: url('../img/bg_start_screen.jpg');
     background-repeat: no-repeat;

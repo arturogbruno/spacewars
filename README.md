@@ -1,6 +1,6 @@
 # Space Wars (Ironhack Project #1)
 
-![alt text](https://github.com/arturogbruno/Space-Wars-IH-Project-1/blob/master/img/logo.png?raw=true "Space Wars logo")
+![alt text](https://github.com/arturogbruno/spacewars/blob/master/img/logo.png?raw=true "Space Wars logo")
 
 ### Play the game 👉🏻 https://arturogbruno.github.io/spacewars/
 
@@ -20,5 +20,5 @@ Use arrow keys to move your spaceship and space bar to shoot your laser weapon.
 ### Thanks  👏🏻
 A big thanks to my teammates and teachers for their support.
 
-![alt text](https://raw.githubusercontent.com/arturogbruno/Space-Wars-IH-Project-1/master/img/alien_icon.png)
+![alt text](https://raw.githubusercontent.com/arturogbruno/spacewars/master/img/alien_icon.png)
 
