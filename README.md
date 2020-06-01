@@ -2,6 +2,9 @@
 
 ![alt text](https://github.com/arturogbruno/Space-Wars-IH-Project-1/blob/master/img/logo.png?raw=true "Space Wars logo")
 
+### Play the game 👉🏻 https://arturogbruno.github.io/spacewars/
+
+
 ### Intro
 Space Wars is a tribute to the famous Space Invaders arcade game. It's the first project I made for Ironhack's web development bootcamp.
 
